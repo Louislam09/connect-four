@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="home.css">
+    <title>Connect Four</title>
+    <link rel="shortcut icon" href="./game/images/icons/icon3.png" type="image/png">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="home.js" defer></script>
+
+</head>
+<body>
+   <div class="container">
+       <h1 class="title">Connect<span>Four</span></h1>
+       <div class="create__room__container">
+           <span>
+               <h1>Crear Una Sala</h1>
+           </span>
+
+           <span>
+                <input class="room__code" placeholder="Codigo Generado Aqui" disabled>
+            </span>
+           
+            <span>
+               <button class="create__room__button">Generar Codigo</button>
+           </span>
+            <span>
+               <button class="join__button">Unete A tu Sala</button>
+           </span>
+       </div>
+       <div class="join__room__container">
+            <span>
+                <h1>Unirse A Una Sala</h1>
+            </span>
+
+           <span>
+               <input class="enter__name" placeholder="Escribe Tu Nombre" maxlength="8">
+           </span>
+           <span>
+               <input class="enter__code" placeholder="Codigo De La Sala">
+           </span>
+
+           <span>
+            <button class="join__room__button">Unirse</button>
+        </span>
+       </div>
+
+        <!-- <div class="play-again-icon"></div> -->
+   </div>
+</body>
+</html>
