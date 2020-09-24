@@ -24,14 +24,14 @@ navigator.mediaDevices.getUserMedia({
             
         });
 
-        // let span  = document.createElement('span');
-        // let span2  = document.createElement('span');
+        let span  = document.createElement('span');
+        let span2  = document.createElement('span');
     
-        // span2.innerText = 'Voz';
-        // span.classList.add('oponent-speaker');
-        // span.innerHTML = `<i class="material-icons">phone_in_talk</i>`;
-        // span.appendChild(span2);
-        // callContainer.appendChild(span);
+        span2.innerText = 'Voz';
+        span.classList.add('oponent-speaker');
+        span.innerHTML = `<i class="material-icons">phone_in_talk</i>`;
+        span.appendChild(span2);
+        callContainer.appendChild(span);
 
         call.on('close',() => {
             audio.remove();
@@ -49,13 +49,9 @@ const connectToNewUser = (userId,stream) => {
     const call = peer.call(userId, stream);
     const audio = document.createElement('audio');
 
+
     call.on('stream', userAudioStream => {
-        // addAudioStream(audio, userAudioStream);
-        audio.srcObject = userAudioStream;
-    
-        audio.addEventListener('loadedmetadata',() => {
-            audio.play();
-        });
+        addAudioStream(audio, userAudioStream);
     })
 }
 
@@ -65,6 +61,8 @@ const addAudioStream = ( audio,stream ) => {
     audio.addEventListener('loadedmetadata',() => {
         audio.play();
     });
+
+    myMicSpan.appendChild(audio);
 }
 
 
