@@ -29,10 +29,10 @@ const playerBoard = document.querySelector('.score-board');
 const meDiv = playerBoard.querySelector('.me');
 const callContainer = document.querySelector('.call__container');
 const myMic = callContainer.querySelector('.my-mic');
-const myMicSpan = myMic.querySelector('span')
+const myMicSpan = myMic.querySelector('span');
 
 const spaceBetweenCircle = 60;
-const amountOfCircle = 11;
+const amountOfCircle = 9;
 let numberOfCircle = 0;
 
 let windowURL = window.location.search.split('?');
