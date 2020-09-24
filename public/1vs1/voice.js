@@ -39,7 +39,7 @@ navigator.mediaDevices.getUserMedia({
     })
 
     socket.on('user-connected',(userId) => {
-    //    alert('En Chat De Voz');
+       alert('En Chat De Voz');
         connectToNewUser(userId,stream);
     })
 })
