@@ -1,25 +1,24 @@
-const myAudio = document.createElement('video');
-const myVideoGrid = document.querySelector('.video-grid');
+const videoGrid = document.getElementById('video-grid');
+const myAudio = document.createElement('audio');
 
 let myAudioStream;
 var peer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '443'
+    port: '3000'
 });
 
 myAudio.muted = true;
 
 navigator.mediaDevices.getUserMedia({
-    video: true,
     audio: true
 }).then(stream => {
     myAudioStream = stream;
-    addAudioStream(myAudio,stream);
+    addAudioStream(myAudio,stream)
 
     peer.on('call', call => {
         call.answer(stream);
-        const audio = document.createElement('video');
+        const audio = document.createElement('audio');
 
         call.on('stream', userAudioStream =>{
             addAudioStream(audio, userAudioStream);
@@ -40,17 +39,25 @@ navigator.mediaDevices.getUserMedia({
         })
     })
 
-    socket.on('user-connected',(userId) => {
-       alert('En Chat De Voz');
+    socket.on('user-connected',({userId}) => {
         connectToNewUser(userId,stream);
+        alert(userId)
     })
 })
 
 
 const connectToNewUser = (userId,stream) => {
     const call = peer.call(userId, stream);
-    const audio = document.createElement('video');
+    const audio = document.createElement('audio');
+    
+    let span  = document.createElement('span');
+    let span2  = document.createElement('span');
 
+    span2.innerText = 'Voz';
+    span.classList.add('oponent-speaker');
+    span.innerHTML = `<i class="material-icons">phone_in_talk</i>`;
+    span.appendChild(span2);
+    callContainer.appendChild(span);
 
     call.on('stream', userAudioStream => {
         addAudioStream(audio, userAudioStream);
@@ -59,13 +66,11 @@ const connectToNewUser = (userId,stream) => {
 
 const addAudioStream = ( audio,stream ) => {
     audio.srcObject = stream;
-
     audio.addEventListener('loadedmetadata',() => {
         audio.play();
     });
-
-    myVideoGrid.appendChild(audio);
 }
+
 
 const muteUnmute = () => {
     const enabled = myAudioStream.getAudioTracks()[0].enabled;
