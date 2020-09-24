@@ -192,7 +192,8 @@ canvas{
 
 .play-again-icon i{
     font-size: 10rem;
-    background: -webkit-linear-gradient(#FF5722, #2196F3);
+    background: -webkit-linear-gradient(#2256ff, #21f33d);
+    background: -webkit-linear-gradient(#cbcae2, #60c5b7);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -229,8 +230,6 @@ canvas{
 .unmute{
     color: #c52a2a !important;
 }
-
-
 
 .video-grid{
     position: absolute;
@@ -291,8 +290,6 @@ span.take__turn{
         transform: scale(1);
     }
 }
-
-
 
 @media only screen and (min-width: 320px) and (max-width:  450px){
     body{
