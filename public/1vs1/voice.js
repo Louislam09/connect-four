@@ -1,4 +1,3 @@
-const videoGrid = document.getElementById('video-grid');
 const myAudio = document.createElement('audio');
 
 let myAudioStream;
@@ -40,7 +39,7 @@ navigator.mediaDevices.getUserMedia({
     })
 
     socket.on('user-connected',(userId) => {
-       alert('En Chat De Voz');
+    //    alert('En Chat De Voz');
         connectToNewUser(userId,stream);
     })
 })
