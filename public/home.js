@@ -91,7 +91,7 @@ joinRoom.addEventListener('click', () => {
 });
 
 howToPlayButton.addEventListener('click', () => {
-    window.open('https://www.youtube.com/?hl=es-419','_blank');
+    window.open('https://youtu.be/zDR10wg6I9U','_blank');
 })
 
 function makeTooltip() {
