@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Connect Four</title>
+    <link rel="shortcut icon" href="images/icons/icon3.png" type="image/png">
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="variables.js" defer></script>
+    <script src="voice.js" defer></script>
+    <script src="main.js" defer></script>
+
+    <script>
+        let isHome = false;
+    </script>
+</head>
+<body>
+    <div class="call__container">
+        <span class="volume-icon">
+            <i class="material-icons">volume_up</i>
+            <span>Music</span>
+        </span>
+        <span class='my-mic'>
+            <i class="material-icons">mic</i>
+            <span>Mute</span>
+        </span>
+    </div>
+
+    </div>
+
+    <div class="score-board">
+    </div>
+    <div class="container">
+        <!-- <canvas id="screen"></canvas> -->
+    </div>
+    
+    <div class="info-board">
+          <div class="oponent me">
+            <span class='oponent__connect'>Yo</span>
+            <span class='oponent__turn'>Tu Turno</span>
+        </div>
+        <div class="oponent oponent__1">
+            <span class='oponent__connect'>Oponente 1</span>
+            <span class='oponent__turn'>Tu Turno</span>
+        </div>
+    </div>
+</body>
+</html>

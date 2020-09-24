@@ -4,7 +4,13 @@ const path = require('path');
 const server = require('http').Server(app);
 const PORT = process.env.PORT || 3000;
 const { v4: uuidv4 } = require('uuid');
+const  { ExpressPeerServer } = require('peer');
+const peerServer = ExpressPeerServer(server,{
+    debug: true
+});
 
+
+app.use('/peerjs', peerServer);
 app.use(express.static(path.join(__dirname,'public')))
 server.listen(PORT, () => console.log(`Server running in port ${PORT}`));
 
@@ -26,33 +32,48 @@ io.on('connection', socket => {
     let socket_name = '';
     let socket_owner = '';
 
+    
+    // socket.on('join-call', ({userId, room}) => {
+    //     socket.to(room).broadcast.emit('user-connected',{
+    //         userId: userId
+    //     })
+    // })
+
     socket.on('user-name', ( PLAYER_INFO ) => {
-        let { name, room, creator} = PLAYER_INFO;
+        let { name, room, creator, userId} = PLAYER_INFO;
         switchRoom(socket,room);
 
         socket_room = room;
         socket_name = name;
+
+        socket.to(room).broadcast.emit('user-connected',userId)
+
         if(creator){
             ROOM_OWNERS[socket.id] = {name: name, room: room, socketID: socket.id};
             socket.emit( 'new-player', PLAYER_INFO );
             socket_owner = socket.id;
         } else{
             const OWNER_KEY = Object
-                .keys(ROOM_OWNERS)
-                .filter(key => ROOM_OWNERS[key].room === room);
+            .keys(ROOM_OWNERS)
+            .filter(key => ROOM_OWNERS[key].room === room);
             if(OWNER_KEY[0]) {
                 socket.broadcast.to(OWNER_KEY[0]).emit('new-player', PLAYER_INFO);
+                socket.broadcast.to(OWNER_KEY[0]).emit('my-socket', socket.id );
             }
 
             socket_owner = OWNER_KEY[0];
         }
 
-        console.log('New connection')
+        // console.log('New connection');
     });
 
     socket.on('players-info', ({ room, data}) => {
         socket_data =  data;
 		io.to(room).emit('receive-players-info', data);
+    })
+
+    socket.on('room-full', data => {
+        socket.to(data).emit('room-full', 'full')
     })
 
     socket.on('circles-to-join', ({circles,name,room,color}) => {

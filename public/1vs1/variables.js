@@ -18,7 +18,7 @@ let WINNER_SOUND = new Audio('audio/winner_sound.mp3');
 let BG_SOUND_1 = new Audio();
 BG_SOUND_1.src = soundSource[Math.floor(Math.random() * soundSource.length)];
 
-const socket = io();
+const socket = io("/");
 
 const container = document.querySelector(".container");
 const volumenContainer = document.querySelector(".volume-icon");
@@ -27,6 +27,9 @@ const infoBoard = document.querySelector(".info-board");
 const oponentsDiv = infoBoard.querySelectorAll('.oponent');
 const playerBoard = document.querySelector('.score-board');
 const meDiv = playerBoard.querySelector('.me');
+const callContainer = document.querySelector('.call__container');
+const myMic = callContainer.querySelector('.my-mic');
+const myMicSpan = myMic.querySelector('span')
 
 const spaceBetweenCircle = 60;
 const amountOfCircle = 11;
@@ -38,6 +41,7 @@ const roomCode = windowURL[1];
 let myName,
 myScore = 0,
 myNumber = -1;
+let myPeerId;
 let firstLoad = true;
 
 if(windowURL.length > 2){
@@ -61,7 +65,7 @@ let lastColumn = [length];
 let CIRCLES = [];
 let SQUARES = [];
 let circlesToJoin = [];
-let takeTurn = [null, null,null];
+let takeTurn = [null, null];
 let INCOMPLETE = true;
 
 const colorArray = [
@@ -115,8 +119,8 @@ const randomColorFn = (opacity = true) => {
 let randomColor = randomColorFn();
 let myColor = randomColorFn(false);
 
-const connections = [null, null, null];
-let playAgainConfirmations = [null, null, null];
+const connections = [null, null];
+let playAgainConfirmations = [null, null];
 let room1 = [];
 
 let myRoom = window.location.search.split('?')[2];

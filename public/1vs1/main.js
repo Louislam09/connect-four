@@ -149,6 +149,9 @@ const initializedCanvas = () => {
 	currentShape = shapeNames[Math.floor(Math.random() * shapeNames.length)];
 
 	playerBoard.childNodes.forEach((child,index) => child.innerText = `Player${index}: 0`);
+
+
+
 }
 
 const appendPlayerToBoard = name => {
@@ -162,7 +165,6 @@ const createBoard = () => {
 	container.innerHTML = '';
 	myScore = 0;
 	oponentOneScore = 0;
-	oponentTwoScore = 0;
 	numberOfCircle = 0;
 
 	initializedCanvas();
@@ -180,6 +182,8 @@ const createBoard = () => {
 			CIRCLES.push(circle);
 		}
 	}
+
+
 
 	makeSquare();
 }
@@ -263,16 +267,14 @@ const makeSquare = () => {
 
 const giveTurn = (firstCall = false) => {
 	if(firstCall){
-		takeTurn = [null,null,null]; 
+		takeTurn = [null,null]; 
 	}
 
 	if(INCOMPLETE){
 		oponentsDiv[0].lastElementChild.classList.remove('connected');
 		oponentsDiv[1].lastElementChild.classList.remove('connected');
-		oponentsDiv[2].lastElementChild.classList.remove('connected');
 		oponentsDiv[0].lastElementChild.classList.remove('blink');
 		oponentsDiv[1].lastElementChild.classList.remove('blink');
-		oponentsDiv[2].lastElementChild.classList.remove('blink');
 		
 		for (const i in takeTurn) {
 			if(takeTurn[i] === null){
@@ -282,7 +284,7 @@ const giveTurn = (firstCall = false) => {
 				break;
 			}
 		}
-		takeTurn.every(turn => turn) ? takeTurn = [null,null,null] : null;
+		takeTurn.every(turn => turn) ? takeTurn = [null,null] : null;
 	}
 }
 
@@ -291,20 +293,16 @@ const setPoint = (name,first = false) => {
 		myScore++;
 	}else if(name === oponentOneName){
 		oponentOneScore++;
-	}else if(name === oponentTwoName) {
-		oponentTwoScore++;
 	}
 
 	if(first){
 		myScore = 0;
 		oponentOneName = 0;
-		oponentTwoName = 0;
 	}
 
 	for (let i = 0; i < playerBoard.childNodes.length; i++) {
 		if(playerBoard.childNodes[i].classList.contains(myName)) playerBoard.childNodes[i].innerText = `${myName}: ${myScore}`;
 		if(playerBoard.childNodes[i].classList.contains(oponentOneName)) playerBoard.childNodes[i].innerText = `${oponentOneName}: ${oponentOneScore}`;
-		if(playerBoard.childNodes[i].classList.contains(oponentTwoName)) playerBoard.childNodes[i].innerText = `${oponentTwoName}: ${oponentTwoScore}`;
 	}
 }
 
@@ -313,7 +311,6 @@ const whoWin = () => {
 		let playerAndScore = [];
 		playerAndScore.push({name: myName,score: myScore});
 		playerAndScore.push({name: oponentOneName,score: oponentOneScore});
-		playerAndScore.push({name: oponentTwoName,score: oponentTwoScore});
 	
 		let compareWith = 0;
 
@@ -321,17 +318,13 @@ const whoWin = () => {
 			compareWith = (player.score > compareWith) ? player.score : compareWith;
 		})
 
-		if(myScore === oponentOneScore && oponentTwoScore !== compareWith ||
-			myScore === oponentTwoScore && oponentOneScore !== compareWith  ||
-			oponentOneScore === oponentTwoScore && myScore !== compareWith 
-		){
+		if(myScore === oponentOneScore){
 			makeTooltip(myName,'draw','winner');
 			return;
 		}
 
 		if(myScore === compareWith) makeTooltip(myName,'winner','winner');
 		if(oponentOneScore === compareWith) makeTooltip(oponentOneName,'winner','winner');
-		if(oponentTwoScore === compareWith) makeTooltip(oponentTwoName,'winner','winner');
 	}
 }
 
@@ -363,19 +356,22 @@ function makeTooltip(name, param, className = 'tooltip') {
 	if(param === 'draw') span.innerText = `😱Hay Un Empate😱`;
 	if(param === 'wait-host') span.innerText = `😎Esperando Jugadores...😎`;
 	if(param === 'room-full') span.innerText = `😅${name} Esta Sala Esta Llena!😅`;
-
-
+	if(param === 'call') span.innerText = `📞En Chat De Voz 📞`;
+	if(param === 'oponent-left') span.innerText = `🎉${name} Ha Ganado!🎉\n Tu Oponente Dejo La Partida 😅`;
+	
     document.querySelector('body').appendChild(span);
 
 	let timeout = (className === 'winner') ? 3000 : 1000;
 	if(param === 'dare') timeout = 3000;
 	if(param === 'wait-host') timeout = 5000;
 	if(param === 'room-full') timeout = 15000;
+	if(param === 'oponent-left') timeout = 3000;
 	if(className === 'winner') playSound(WINNER_SOUND,0.5);
 
     setTimeout(() => {
 		span.remove();
 		if(className === 'winner') playAgainIcon();
+		if(param === 'oponent-left') window.open(window.location.origin,"_parent");
     },timeout);
 }
 
@@ -439,11 +435,27 @@ volumeIcon.addEventListener('click', e => {
 	let target = e.target;
 	if(target.innerText === 'volume_up'){
 		target.innerText = 'volume_off';
+		target.classList.add('unmute');
 		pauseBackgroundMusic();
 	}else{
 		target.innerText = 'volume_up';
+		target.classList.remove('unmute');
 		playBackgroundMusic();
 	}
+})
+
+myMic.addEventListener('click', e => { 
+	let target = e.target;
+	if(target.innerText === 'mic'){
+		target.innerText = 'mic_off';
+		target.classList.add('unmute');
+		myMicSpan.innerText = 'Activar';
+	}else{
+		target.classList.remove('unmute');
+		target.innerText = 'mic';
+		myMicSpan.innerText = 'Mute';
+	}
+	muteUnmute();
 })
 
 container.addEventListener('click',() => {
@@ -458,7 +470,18 @@ let data = {
 	creator: (myRoom === 'onwer-y') ? true : false
 }
 
-socket.emit('user-name', data);
+peer.on('open', (id) => {
+    // socket.emit('join-call', {
+    //     userId: id,
+    //     room: roomCode
+	// });
+
+	data['userId'] = id;
+	
+	socket.emit('user-name', data);
+})
+
+
 
 // ================================================================================================================================
 // ================================================================================================================================
@@ -469,15 +492,10 @@ let playerName = '';
 
 socket.on('new-player', (PLAYER_INFO) => {
 	let { name, room } = PLAYER_INFO;
-	// if(myRoom === 'onwer-y' && firstLoad){
-	// 	socket.emit('reset-game', 'hola');
-	// }
-	
-	makeTooltip(name,'connect');
-
 	let ROOM_FULL = connections.every(connection => connection !== null);
-
+	
 	if(!ROOM_FULL) {
+		makeTooltip(name,'connect');
 		for(const i in connections){
 			if(connections[i] === null){
 				playerIndex = i;
@@ -497,12 +515,14 @@ socket.on('new-player', (PLAYER_INFO) => {
 			data: [...room1]
 		});
 	}
+	
 });
 
 socket.on('receive-players-info', data => {
 	playerBoard.innerHTML = '';
 	room1 = data;
 	if(data){
+
 		data.forEach((player,index) => {
 			if(index >= 3) return;
 			
@@ -520,25 +540,19 @@ socket.on('receive-players-info', data => {
 				oponentsDiv[index].firstElementChild.innerText = `Yo(${player.userName})`;
 				myNumber = index;
 				oponentOneNumber = 1;
-				oponentTwoNumber = 2;
 			}else{
 				oponentsDiv[index].firstElementChild.innerText = player.userName;
 			}
 
 			oponentsDiv[index].firstElementChild.classList.add('connected');
-			if(index === 2) giveTurn(true);
+			if(index === 1) giveTurn(true);
 		});
 	
 		if(oponents.length === 0){
 			oponentOneName = null;
-			oponentTwoName = null;
 		}else if(oponents.length === 1){
 			oponentOneName = oponents[0].userName;
-			oponentTwoName = null;
-		} else if(oponents.length === 2){
-			oponentOneName = oponents[0].userName;
-			oponentTwoName = oponents[1].userName;
-		}
+		} 
 	}
 });
 
@@ -550,7 +564,12 @@ socket.on( 'circles-to-join' , data => {
 	circles.forEach((circle) => CIRCLES[circle.circle.id].span.classList.add('has-line'));
 });
 
-socket.on('oponent-disconnected', (name) => makeTooltip(name,'disconnect'));
+socket.on('oponent-disconnected', (name) => {
+	makeTooltip(name,'disconnect');
+	setTimeout(() => {
+		// makeTooltip(myName,'oponent-left','winner');
+	},3000)
+});
 
 socket.on('acept-match', (name) => makeTooltip(name,'dare'));
 
@@ -570,7 +589,7 @@ socket.on('play-again', data => {
 		if(playAgainConfirmations.every(res => res === true)){
 			socket.emit('reset-game', 'hola');
 	
-			playAgainConfirmations = [null, null, null];
+			playAgainConfirmations = [null, null];
 		}
 	}
 });

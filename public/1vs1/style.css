@@ -200,16 +200,35 @@ canvas{
     cursor: pointer;
 }
 
-.volume-icon{
+.call__container{
     position: absolute;
+    display: flex;
+    flex-direction: column;
     left: 0%;
+    top: 30%;
 }
-.volume-icon i{
+
+.call__container span{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.call__container span > span{
+    color: white;
+    font-size: 1.5rem;
+}
+
+.call__container > span i{
     font-size: 3.5rem;
     color: white;
     margin: 5px;
 }
 
+.unmute{
+    color: #c52a2a !important;
+}
 
 span.connected{
     color: white;
@@ -265,21 +284,22 @@ span.take__turn{
     }    
     .container{
         /* margin: 10px 0%; */
-        top: 48%;
+        top: 50%;
     }
 
     .score-board{
         position: absolute;
-        left: 50%;
+        left: 65%;
         top: 5%;
         transform: translate(-50%,-50%);
         border: none;
         padding: 5px;
-        width: var(--container-width);
+        width: 60%;
         display: flex;
         flex-direction: row ;
         flex-wrap: wrap;
         height: 0%;
+        flex: 0.8;
     }
     
     .score-board span{
@@ -296,7 +316,7 @@ span.take__turn{
 
     .info-board {
         position: absolute;
-        top: 88%;
+        top: 90%;
         left: 50%;
         transform: translate(-50%,-50%);
         width: var(--container-width);
@@ -319,6 +339,23 @@ span.take__turn{
     
     .info-board .oponent:first-child{
         margin-top: 0px;
+    }
+
+    .call__container{
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        left: 20%;
+        top: 8%;
+        transform: translate(-50%,-50%);
+    }
+
+    .call__container > span{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-right: 5px;
     }
 }
 

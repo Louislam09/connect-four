@@ -15,6 +15,10 @@
     --container-background:  linear-gradient(to right, #24243e, #302b63, #0f0c29);
 }
 
+html,body{
+    height: 100%;
+}
+
 body{
     background-color: #001029;
     background-image: url("./game/images/stardust.png");
@@ -155,6 +159,8 @@ button{
     font-weight: bold;
     transition: background .4s ease-in-out;
     color: white;
+    text-transform: uppercase;
+
 }
 
 button:hover{
@@ -196,10 +202,134 @@ button:hover{
     color: white;
 }
 
+.tuto__room__button{
+    background: #3F51B5;
+}
+.tuto__room__button:hover{
+    background: #17215c;
+}
+
 .join__button{
     display: none;
 }
 
+.game__config{
+    position: relative;
+    height: -webkit-fill-available;
+    background: rgba(0, 0, 0, 0.945);
+}
+
+.config__container{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    flex-direction: column;
+    border: 2px solid white;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    background: rgba(17, 77, 62, 0.301);
+}
+
+.config__title{
+    font-size: 3rem;
+    margin: 10px;
+    color: #009688; 
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px inset white;
+    text-shadow: -1px -2px 5px green;
+    padding: 10px 10px;
+}
+.config__container label{
+    font-size: 2.5rem;
+}
+.config__name__container{
+    margin-bottom: 15px;
+}
+
+.config__name__container input{
+    transition: background .4s ease-in-out;
+    border: none;
+    border-left: 6px solid white;
+    border-right: 6px solid white;
+    color: white;
+    background-color: #f0f8ff09;
+    border-bottom: 1px solid white;
+    border-top: 1px solid white;
+}
+
+.config__container button {
+    border: 2px solid white;
+}
+
+.config__name__container input:focus {
+    color: white;
+    background-color: #ffffff42;
+}
+
+.config__mode__container label{
+    text-decoration: underline;
+}
+
+.config__mode__container div label{   
+    font-size: 2rem;
+}
+
+.config__mode__container div{  
+    position: relative; 
+    display: flex;
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+.config__mode__container div label {
+	color: white;
+	font-size: 25px;
+	font-weight: bolder;
+    text-shadow: -4px -2px black;
+    margin-right: 50%; 
+    color: #009688; 
+}
+
+.config__mode__container div .mode1::after,
+.config__mode__container div .mode2::after {
+	position: absolute;
+	display: block;
+	content: "";
+    left: 20%;
+    top: 10%;
+	width: 20px;
+	height: 20px;
+	background-color: white;
+	border: 1px solid #08b9b9;
+	border-radius: 5px;
+	transition: .4s;
+}
+
+.config__mode__container div .mode2::after{
+    left: 80%;
+}
+
+.config__mode__container div label:hover  {
+	cursor: pointer;
+}
+
+.config__mode__container #mode1,
+.config__mode__container #mode2{
+	display: none;
+}
+
+#mode1:checked ~  .mode1::after,
+#mode2:checked ~  .mode2::after {
+	background-color: #00ffd5;
+	content: "✔️";
+	font-size: large;
+	border: 3px solid white;
+}
 
 
 @keyframes move{
@@ -246,4 +376,5 @@ button:hover{
         display: flex;
         flex-wrap: wrap;
     }
+    
 }   
