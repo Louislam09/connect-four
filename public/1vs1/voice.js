@@ -1,4 +1,5 @@
-const myAudio = document.createElement('audio');
+const myAudio = document.createElement('video');
+const myVideoGrid = document.querySelector('.video-grid');
 
 let myAudioStream;
 var peer = new Peer(undefined, {
@@ -10,6 +11,7 @@ var peer = new Peer(undefined, {
 myAudio.muted = true;
 
 navigator.mediaDevices.getUserMedia({
+    video: true,
     audio: true
 }).then(stream => {
     myAudioStream = stream;
@@ -17,7 +19,7 @@ navigator.mediaDevices.getUserMedia({
 
     peer.on('call', call => {
         call.answer(stream);
-        const audio = document.createElement('audio');
+        const audio = document.createElement('video');
 
         call.on('stream', userAudioStream =>{
             addAudioStream(audio, userAudioStream);
@@ -47,7 +49,7 @@ navigator.mediaDevices.getUserMedia({
 
 const connectToNewUser = (userId,stream) => {
     const call = peer.call(userId, stream);
-    const audio = document.createElement('audio');
+    const audio = document.createElement('video');
 
 
     call.on('stream', userAudioStream => {
@@ -62,9 +64,8 @@ const addAudioStream = ( audio,stream ) => {
         audio.play();
     });
 
-    myMicSpan.appendChild(audio);
+    myVideoGrid.appendChild(audio);
 }
-
 
 const muteUnmute = () => {
     const enabled = myAudioStream.getAudioTracks()[0].enabled;

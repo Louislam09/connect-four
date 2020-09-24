@@ -230,6 +230,20 @@ canvas{
     color: #c52a2a !important;
 }
 
+
+
+.video-grid{
+    position: absolute;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+}
+.video-grid video{
+    margin: 10px;
+    width: 200px;
+    border: 2px solid red;
+}
+
 span.connected{
     color: white;
     text-decoration: none;
@@ -277,6 +291,8 @@ span.take__turn{
         transform: scale(1);
     }
 }
+
+
 
 @media only screen and (min-width: 320px) and (max-width:  450px){
     body{
