@@ -5,7 +5,7 @@ let myAudioStream;
 var peer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '443'
+    port: '3000'
 });
 
 myAudio.muted = true;
@@ -14,61 +14,53 @@ navigator.mediaDevices.getUserMedia({
     audio: true
 }).then(stream => {
     myAudioStream = stream;
-    addAudioStream(myAudio,stream)
+    // addAudioStream(myAudio,stream)
 
     peer.on('call', call => {
         call.answer(stream);
         const audio = document.createElement('audio');
 
         call.on('stream', userAudioStream =>{
-            addAudioStream(audio, userAudioStream);
+            addAudioStream(audio, userAudioStream,'Oponente');
             
         });
-
-        let span  = document.createElement('span');
-        let span2  = document.createElement('span');
-    
-        span2.innerText = 'Voz';
-        span.classList.add('oponent-speaker');
-        span.innerHTML = `<i class="material-icons">phone_in_talk</i>`;
-        span.appendChild(span2);
-        callContainer.appendChild(span);
 
         call.on('close',() => {
             audio.remove();
         })
     })
 
-    socket.on('user-connected',(userId) => {
-        connectToNewUser(userId,stream);
-        alert(userId)
+    socket.on('user-connected',({userId,userName}) => {
+        connectToNewUser(userId,stream,userName);
+        alert(`En chat de voz con ${userName}`);
     })
 })
 
 
-const connectToNewUser = (userId,stream) => {
+const connectToNewUser = (userId,stream,name) => {
     const call = peer.call(userId, stream);
     const audio = document.createElement('audio');
-    
-    let span  = document.createElement('span');
-    let span2  = document.createElement('span');
-
-    span2.innerText = 'Voz';
-    span.classList.add('oponent-speaker');
-    span.innerHTML = `<i class="material-icons">phone_in_talk</i>`;
-    span.appendChild(span2);
-    callContainer.appendChild(span);
 
     call.on('stream', userAudioStream => {
-        addAudioStream(audio, userAudioStream);
+        addAudioStream(audio, userAudioStream,name);
     })
 }
 
-const addAudioStream = ( audio,stream ) => {
+const addAudioStream = ( audio,stream,name ) => {
     audio.srcObject = stream;
     audio.addEventListener('loadedmetadata',() => {
         audio.play();
     });
+
+    let span  = document.createElement('span');
+    let span2  = document.createElement('span');
+
+    span2.innerText = name;
+    span.classList.add('oponent-speaker');
+    span.innerHTML = `<i class="material-icons">phone_in_talk</i>`;
+    span.appendChild(span2);
+    span.appendChild(audio);
+    callContainer.appendChild(span);
 }
 
 

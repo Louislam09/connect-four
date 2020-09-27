@@ -1,0 +1,21 @@
+{
+    "short_name": "connectFour",
+    "name": "connectFour",
+    "theme_color": "#001029",
+    "background_color": "#fff",
+    "description": "A Game to enjoy with friends",
+    "display": "standalone",
+    "icons":  [
+		{
+			"src": "icons/icon2.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "icons/icon3.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"start_url": "."
+}

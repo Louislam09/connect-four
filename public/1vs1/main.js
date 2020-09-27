@@ -149,9 +149,6 @@ const initializedCanvas = () => {
 	currentShape = shapeNames[Math.floor(Math.random() * shapeNames.length)];
 
 	playerBoard.childNodes.forEach((child,index) => child.innerText = `Player${index}: 0`);
-
-
-
 }
 
 const appendPlayerToBoard = name => {
@@ -193,7 +190,7 @@ const connectCircle = (c1,c2,name,color) => {
 	ctx.moveTo(c1.x, c1.y);
 	ctx.lineWidth = 5;
 	ctx.lineTo(c2.x, c2.y);
-	ctx.strokeStyle = 'red';
+	ctx.strokeStyle = color;
 	ctx.stroke();
 	// ctx.strokeStyle = colorArray[Math.floor(Math.random() * colorArray.length)];
 
@@ -479,9 +476,7 @@ peer.on('open', (id) => {
 	data['userId'] = id;
 	
 	socket.emit('user-name', data);
-})
-
-
+});
 
 // ================================================================================================================================
 // ================================================================================================================================
@@ -568,13 +563,16 @@ socket.on('oponent-disconnected', (name) => {
 	makeTooltip(name,'disconnect');
 	setTimeout(() => {
 		// makeTooltip(myName,'oponent-left','winner');
-	},3000)
+	},3000);
+	if(callContainer.querySelector('.oponent-speaker')) callContainer.querySelector('.oponent-speaker').remove();
+
 });
 
 socket.on('acept-match', (name) => makeTooltip(name,'dare'));
 
 socket.on('remove-oponent', data => {
 	connections[parseInt(data)] = null;
+	// if(callContainer.querySelector('.oponent-speaker')) callContainer.querySelector('.oponent-speaker').remove();
 })
 
 socket.on('play-again', data => {

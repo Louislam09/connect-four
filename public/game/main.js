@@ -189,7 +189,7 @@ const connectCircle = (c1,c2,name,color) => {
 	ctx.moveTo(c1.x, c1.y);
 	ctx.lineWidth = 5;
 	ctx.lineTo(c2.x, c2.y);
-	ctx.strokeStyle = 'red';
+	ctx.strokeStyle = color;
 	ctx.stroke();
 	// ctx.strokeStyle = colorArray[Math.floor(Math.random() * colorArray.length)];
 

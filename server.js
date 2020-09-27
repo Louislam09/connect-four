@@ -33,20 +33,21 @@ io.on('connection', socket => {
     let socket_owner = '';
 
     
-    // socket.on('join-call', ({userId, room}) => {
+    // socket.on('join-call', ({userId, room,name}) => {
     //     socket.to(room).broadcast.emit('user-connected',{
-    //         userId: userId
-    //     })
+    //         userId: userId,
+    //         userName: name
+    //     });
     // })
 
     socket.on('user-name', ( PLAYER_INFO ) => {
-        let { name, room, creator, userId} = PLAYER_INFO;
+        let { name, room, creator,userId} = PLAYER_INFO;
         switchRoom(socket,room);
 
         socket_room = room;
         socket_name = name;
 
-        socket.to(room).broadcast.emit('user-connected',userId)
+        socket.to(room).broadcast.emit('user-connected',({userId:userId,userName: name}))
 
         if(creator){
             ROOM_OWNERS[socket.id] = {name: name, room: room, socketID: socket.id};
@@ -58,13 +59,16 @@ io.on('connection', socket => {
             .filter(key => ROOM_OWNERS[key].room === room);
             if(OWNER_KEY[0]) {
                 socket.broadcast.to(OWNER_KEY[0]).emit('new-player', PLAYER_INFO);
-                socket.broadcast.to(OWNER_KEY[0]).emit('my-socket', socket.id );
+                // socket.broadcast.to(OWNER_KEY[0]).emit('my-socket', socket.id );
             }
-
             socket_owner = OWNER_KEY[0];
         }
 
-        // console.log('New connection');
+        // socket.on('disconnect', () => {
+        //     socket.to(room).emit('user-disconnect', userId);
+        // })
+
+        console.log('New connection');
     });
 
     socket.on('players-info', ({ room, data}) => {
@@ -72,9 +76,9 @@ io.on('connection', socket => {
 		io.to(room).emit('receive-players-info', data);
     })
 
-    socket.on('room-full', data => {
-        socket.to(data).emit('room-full', 'full')
-    })
+    // socket.on('room-full', data => {
+    //     socket.to(data).emit('room-full', 'full')
+    // })
 
     socket.on('circles-to-join', ({circles,name,room,color}) => {
 		socket.to(room).broadcast.emit('circles-to-join', {

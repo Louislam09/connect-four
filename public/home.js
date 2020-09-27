@@ -10,8 +10,13 @@ let configContianer;
 let keyName = 'room-config';
 let playerName;
 let gameMode;
+let howToPlayUrl = "https://youtu.be/zDR10wg6I9U";
 
 const socket = io();
+
+window.addEventListener('load', () => {
+    registerSW();
+});
 
 socket.on('code', ({ code }) => {
     gameMode = getFromLocalStorage()[1];
@@ -91,8 +96,8 @@ joinRoom.addEventListener('click', () => {
 });
 
 howToPlayButton.addEventListener('click', () => {
-    window.open('https://youtu.be/zDR10wg6I9U','_blank');
-})
+    window.open(howToPlayUrl,'_blank');
+});
 
 function makeTooltip() {
     let span = document.createElement('span');
@@ -151,4 +156,14 @@ function getFromLocalStorage() {
 
     return storagedData;
 
+}
+
+async function registerSW() {
+    if ("serviceWorker" in navigator) {
+        try {
+            await navigator.serviceWorker.register("./sw.js");
+        } catch (error) {
+            console.log("ServiceWorker registration failed")
+        }
+    }
 }
