@@ -22,5 +22,5 @@ CLONE IT AND OPEN IT
   
 INSTALL DEPENDENCIES
 ---------------------
-npm i && npm start
+- npm i && npm start
 
