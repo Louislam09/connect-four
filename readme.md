@@ -17,8 +17,8 @@ GAME FEATURES
 
 CLONE IT AND OPEN IT
 ---------------------
-git clone "git-url"
-cd "proyect name"
+- git clone "git-url"
+- cd "proyect name"
   
 INSTALL DEPENDENCIES
 ---------------------
