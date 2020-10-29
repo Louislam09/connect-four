@@ -15,3 +15,12 @@ GAME FEATURES
 - **THE 1 VS 1 MODE HAS VOICE CHAT**
 
 
+CLONE IT AND OPEN IT
+---------------------
+git clone <git-url>
+cd <proyect name>
+  
+INSTALL DEPENDENCIES
+---------------------
+npm i && npm start
+
