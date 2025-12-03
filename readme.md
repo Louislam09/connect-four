@@ -1,7 +1,7 @@
 Connect Four Game
 =================
 
-- PLAY IT HERE : [CONNECT-FOUR](https://connect-four-09.herokuapp.com/ )
+
 
 <img alt="Terraform" src="./public/icons/icon2.png">
 
